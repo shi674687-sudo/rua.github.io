@@ -89,6 +89,36 @@
   </style>
 </head>
 <body>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const messaging = firebase.messaging();
+
+  // 通知許可をリクエスト
+  async function requestPermission() {
+    const permission = await Notification.requestPermission();
+    if (permission === "granted") {
+      const token = await messaging.getToken({
+        vapidKey: "YOUR_VAPID_PUBLIC_KEY"
+      });
+      console.log("FCM Token:", token);
+      // ← この token を後でサーバーに保存する
+    }
+  }
+
+  requestPermission();
+</script>
+
   <h1>デイリーチェックリスト</h1>
   <div class="sub" id="today"></div>
 
